@@ -1,0 +1,4 @@
+{
+    "source_directory": "path_to_your_jpg_files",
+    "destination_directory": "path_to_save_png_files"
+}
