@@ -1,4 +1,4 @@
 {
-    "source_directory": "path_to_your_jpg_files",
-    "destination_directory": "path_to_save_png_files"
+    "source_directory": "/path/to/your/jpg/files",
+    "destination_directory": "/path/to/save/png/files"
 }
