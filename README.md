@@ -1,6 +1,6 @@
 # JPG to PNG Converter
 
-This Python script converts JPG images to PNG format using multithreading for improved performance.
+This Python script converts JPG images to PNG format using multithreading for improved performance. It can be run as a Python script (with GUI or CLI) or as a standalone Windows executable with a graphical user interface.
 
 ## Features
 
@@ -9,6 +9,8 @@ This Python script converts JPG images to PNG format using multithreading for im
 - Implements logging for better debugging and monitoring
 - Includes error handling and input validation
 - Provides unit tests for key functions
+- Can be built as a standalone Windows executable
+- Offers both GUI and CLI interfaces
 
 ## Installation
 
@@ -31,6 +33,16 @@ This Python script converts JPG images to PNG format using multithreading for im
 
 ## Usage
 
+### As a Python Script with GUI
+
+1. Run the script:
+   ```
+   python jpg2png.py
+   ```
+2. Use the GUI to select source and destination directories, then click "Convert".
+
+### As a Python Script with CLI
+
 1. Update the `config.json` file with the correct paths:
    ```json
    {
@@ -39,14 +51,25 @@ This Python script converts JPG images to PNG format using multithreading for im
    }
    ```
 
-2. Run the script:
+2. Run the script with the `--cli` flag:
    ```
-   python jpg2png.py
+   python jpg2png.py --cli
    ```
+
+### As a Windows Executable
+
+1. Build the executable:
+   ```
+   python build_exe.py
+   ```
+
+2. The executable will be created in the `dist` folder as `JPGtoPNGConverter.exe`.
+
+3. Double-click `JPGtoPNGConverter.exe` to run the program with the GUI.
 
 ## Configuration
 
-The script uses a `config.json` file to specify the source and destination directories. Ensure that both paths are valid and accessible.
+When using the CLI version, the script uses a `config.json` file to specify the source and destination directories. Ensure that both paths are valid and accessible. When using the GUI version, you can select the directories through the interface.
 
 ## How it works
 

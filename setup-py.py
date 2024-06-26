@@ -6,12 +6,12 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setup(
     name="jpg-to-png-converter",
     version="0.1.0",
-    author="Your Name",
-    author_email="your.email@example.com",
+    author="Raul Pineda",
+    author_email="raul@pinedamail.com",
     description="A simple JPG to PNG converter with multithreading",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/jpg-to-png-converter",
+    url="https://gitlab.leadingbit.com/raul/jpg2png",
     packages=find_packages(),
     install_requires=[
         "Pillow>=9.5.0",
