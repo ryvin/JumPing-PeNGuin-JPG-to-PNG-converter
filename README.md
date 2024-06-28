@@ -1,6 +1,6 @@
-# JPG to PNG Converter
+# JumPinG PeNGuin - JPG to PNG Converter
 
-This Python script converts JPG images to PNG format using multithreading for improved performance. It can be run as a Python script (with GUI or CLI) or as a standalone Windows executable with a graphical user interface.
+This Python script converts JPG images to PNG format using multithreading for improved performance. It can be run as a Python script or as a standalone Windows executable, both supporting GUI and CLI modes.
 
 ## Features
 
@@ -8,16 +8,15 @@ This Python script converts JPG images to PNG format using multithreading for im
 - Uses multithreading for faster processing
 - Implements logging for better debugging and monitoring
 - Includes error handling and input validation
-- Provides unit tests for key functions
-- Can be built as a standalone Windows executable
-- Offers both GUI and CLI interfaces
+- Can be built as a standalone Windows executable supporting both GUI and CLI modes
+- Resumes interrupted conversions by skipping existing PNG files
 
 ## Installation
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/jpg-to-png-converter.git
-   cd jpg-to-png-converter
+   git clone https://gitlab.leadingbit.com/raul/jpg2png.git
+   cd jpg2png
    ```
 
 2. Create a virtual environment (optional but recommended):
@@ -33,27 +32,17 @@ This Python script converts JPG images to PNG format using multithreading for im
 
 ## Usage
 
-### As a Python Script with GUI
+### As a Python Script
 
-1. Run the script:
+1. For GUI mode:
    ```
    python jpg2png.py
    ```
-2. Use the GUI to select source and destination directories, then click "Convert".
+   Use the GUI to select source and destination directories, then click "Convert".
 
-### As a Python Script with CLI
-
-1. Update the `config.json` file with the correct paths:
-   ```json
-   {
-     "source_directory": "/path/to/your/jpg/files",
-     "destination_directory": "/path/to/save/png/files"
-   }
+2. For CLI mode:
    ```
-
-2. Run the script with the `--cli` flag:
-   ```
-   python jpg2png.py --cli
+   python jpg2png.py /path/to/source /path/to/destination
    ```
 
 ### As a Windows Executable
@@ -63,29 +52,29 @@ This Python script converts JPG images to PNG format using multithreading for im
    python build_exe.py
    ```
 
-2. The executable will be created in the `dist` folder as `JPGtoPNGConverter.exe`.
+2. An executable named `JPGtoPNGConverter.exe` will be created in the `dist` folder.
 
-3. Double-click `JPGtoPNGConverter.exe` to run the program with the GUI.
+3. To use the GUI version:
+   - Double-click `JPGtoPNGConverter.exe`, or
+   - Run `JPGtoPNGConverter.exe` from the command line without arguments
 
-## Configuration
-
-When using the CLI version, the script uses a `config.json` file to specify the source and destination directories. Ensure that both paths are valid and accessible. When using the GUI version, you can select the directories through the interface.
+4. To use the CLI version:
+   ```
+   JPGtoPNGConverter.exe /path/to/source /path/to/destination
+   ```
 
 ## How it works
 
-1. The script reads the `config.json` file to determine the source and destination directories.
-2. It iterates over all files in the source directory, checking if they are valid JPG/JPEG images.
-3. For each valid image, the script converts it to PNG format and saves it in the destination directory.
+1. The script scans the source directory for JPG/JPEG images.
+2. It checks the destination directory for existing PNG files to avoid unnecessary conversions.
+3. For each valid JPG image that doesn't have a corresponding PNG, the script converts it to PNG format and saves it in the destination directory.
 4. The conversion process uses multithreading to improve performance when dealing with multiple images.
-5. Logging is implemented to track the conversion process and any errors that may occur.
+5. Progress is displayed in real-time, showing the number of files converted and the percentage complete.
+6. Logging is implemented to track the conversion process and any errors that may occur.
 
-## Testing
+## Resuming Interrupted Conversions
 
-To run the unit tests:
-
-```
-python -m unittest test_jpg2png.py
-```
+If the conversion process is interrupted, you can simply run the script or executable again with the same source and destination directories. The converter will automatically skip any PNG files that already exist in the destination folder, effectively resuming from where it left off.
 
 ## Contributing
 

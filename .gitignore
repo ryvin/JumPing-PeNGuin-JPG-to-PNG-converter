@@ -1,5 +1,4 @@
 .conda
+*.spec
 build
 dist
-jpg2png.spec
-jpg_to_png_converter.egg-info

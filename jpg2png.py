@@ -2,13 +2,12 @@ import os
 import json
 import logging
 import tkinter as tk
-from tkinter import filedialog, ttk
+from tkinter import filedialog, ttk, messagebox
 from PIL import Image
 import sys
-import imghdr
-from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import threading
+import argparse
 
 class JPGtoPNGConverter:
     def __init__(self):
@@ -41,18 +40,11 @@ class JPGtoPNGConverter:
             return None
 
     def is_image(self, file_path):
-        return imghdr.what(file_path) in ['jpeg', 'jpg']
-
-    def convert_image(self, source_path, dest_path):
         try:
-            img = Image.open(source_path)
-            img.save(dest_path, 'PNG')
-            logging.info(f"Converted {source_path} to {dest_path}")
-            self.converted_files += 1
-            self.root.after(0, self.update_progress)
-        except Exception as e:
-            logging.error(f"Error converting {source_path}: {str(e)}")
-
+            with Image.open(file_path) as img:
+                return img.format in ['JPEG', 'JPG']
+        except:
+            return False
 
     def convert_jpg_to_png(self):
         source_dir = Path(self.source_dir)
@@ -61,34 +53,51 @@ class JPGtoPNGConverter:
         if not source_dir.exists():
             raise FileNotFoundError(f"Source directory '{source_dir}' does not exist.")
         
-        dest_dir.mkdir(parents=True, exist_ok=True)
+        try:
+            dest_dir.mkdir(parents=True, exist_ok=True)
+        except PermissionError:
+            raise PermissionError(f"Permission denied: Unable to create or access the destination directory '{dest_dir}'.")
+
+        # Get list of existing PNG files in destination directory
+        existing_pngs = {f.stem for f in dest_dir.glob('*.png')}
 
         image_files = [f for f in source_dir.iterdir() if self.is_image(f)]
         self.total_files = len(image_files)
         self.converted_files = 0
 
-        with ThreadPoolExecutor() as executor:
-            futures = []
-            for file_path in image_files:
+        for file_path in image_files:
+            if file_path.stem not in existing_pngs:
                 png_filename = file_path.stem + ".png"
                 dest_path = dest_dir / png_filename
-                futures.append(executor.submit(self.convert_image, file_path, dest_path))
-            
-            for future in futures:
-                future.result()
+                self.convert_image(file_path, dest_path)
+            else:
+                self.converted_files += 1
+                self.update_progress()
 
-    def run_cli(self):
-        config = self.load_config()
-        if config:
-            self.source_dir = config['source_directory']
-            self.dest_dir = config['destination_directory']
-            self.convert_jpg_to_png()
+    def convert_image(self, source_path, dest_path):
+        try:
+            img = Image.open(source_path)
+            img.save(dest_path, 'PNG')
+            logging.info(f"Converted {source_path} to {dest_path}")
+            self.converted_files += 1
+            self.update_progress()
+        except Exception as e:
+            error_msg = f"Error converting {source_path}: {str(e)}"
+            logging.error(error_msg)
+            if hasattr(self, 'root'):
+                self.root.after(0, lambda: messagebox.showerror("Error", error_msg))
+
+    def update_progress(self):
+        progress = int(self.converted_files / self.total_files * 100)
+        if hasattr(self, 'progress_var'):
+            self.progress_var.set(progress)
+            self.status_label.config(text=f"Converting... {progress}% ({self.converted_files}/{self.total_files})")
         else:
-            print("Failed to load configuration. Please check your config.json file.")
+            print(f"Progress: {progress}% ({self.converted_files}/{self.total_files})", end='\r')
 
     def run_gui(self):
         self.root = tk.Tk()
-        self.root.title("JPG to PNG Converter")
+        self.root.title("JumPinG PeNGuin - JPG to PNG Converter")
 
         frame = ttk.Frame(self.root, padding="10")
         frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
@@ -113,21 +122,36 @@ class JPGtoPNGConverter:
         self.status_label = ttk.Label(frame, text="")
         self.status_label.grid(column=1, row=4)
 
-        config = self.load_config()
-        if config:
-            self.source_entry.insert(0, config['source_directory'])
-            self.dest_entry.insert(0, config['destination_directory'])
-
         self.root.mainloop()
+
 
     def browse_directory(self, entry):
         directory = filedialog.askdirectory()
-        entry.delete(0, tk.END)
-        entry.insert(0, directory)
+        if directory:
+            entry.delete(0, tk.END)
+            entry.insert(0, directory)
 
     def start_conversion(self):
         self.source_dir = self.source_entry.get()
         self.dest_dir = self.dest_entry.get()
+        
+        if not os.path.exists(self.source_dir):
+            messagebox.showerror("Error", f"Source directory does not exist: {self.source_dir}")
+            return
+        
+        if not os.access(self.source_dir, os.R_OK):
+            messagebox.showerror("Error", f"No read permission for source directory: {self.source_dir}")
+            return
+        
+        parent_dest = os.path.dirname(self.dest_dir)
+        if not os.path.exists(parent_dest):
+            messagebox.showerror("Error", f"Parent of destination directory does not exist: {parent_dest}")
+            return
+        
+        if not os.access(parent_dest, os.W_OK):
+            messagebox.showerror("Error", f"No write permission for parent of destination directory: {parent_dest}")
+            return
+        
         self.status_label.config(text="Converting...")
         self.progress_var.set(0)
         self.root.update()
@@ -138,26 +162,35 @@ class JPGtoPNGConverter:
     def run_conversion(self):
         try:
             self.convert_jpg_to_png()
-            self.root.after(0, self.update_status, f"Conversion complete. Converted {self.converted_files} files.")
+            if hasattr(self, 'root'):
+                self.root.after(0, self.update_status, f"Conversion complete. Converted {self.converted_files} files.")
         except Exception as e:
-            self.root.after(0, self.update_status, f"Error: {str(e)}")
+            if hasattr(self, 'root'):
+                self.root.after(0, lambda: messagebox.showerror("Error", f"An unexpected error occurred: {str(e)}"))
 
     def update_status(self, message):
-        self.status_label.config(text=message)
-    
-    def update_progress(self):
-        progress = int(self.converted_files / self.total_files * 100)
-        self.progress_var.set(progress)
-        self.status_label.config(text=f"Converting... {progress}%")
+        if hasattr(self, 'status_label'):
+            self.status_label.config(text=message)
 
+    def run_cli(self, source, destination):
+        self.source_dir = source
+        self.dest_dir = destination
 
+        print(f"Converting JPG images from {self.source_dir} to PNG in {self.dest_dir}")
+        self.convert_jpg_to_png()
+        print(f"\nConversion complete. Converted {self.converted_files} files.")
 
 def main():
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     converter = JPGtoPNGConverter()
     
-    if len(sys.argv) > 1 and sys.argv[1] == '--cli':
-        converter.run_cli()
+    parser = argparse.ArgumentParser(description='Convert JPG images to PNG format.')
+    parser.add_argument('source', nargs='?', help='Source directory containing JPG images')
+    parser.add_argument('destination', nargs='?', help='Destination directory for PNG images')
+    args = parser.parse_args()
+
+    if args.source and args.destination:
+        converter.run_cli(args.source, args.destination)
     else:
         converter.run_gui()
 
