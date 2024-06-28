@@ -1,4 +1,5 @@
 # JumPinG PeNGuin - JPG to PNG Converter
+![Jumping Penguin](/png_files/jumpingpenguin.png)
 
 This Python script converts JPG images to PNG format using multithreading for improved performance. It can be run as a Python script or as a single standalone Windows executable, supporting both GUI and CLI modes.
 
