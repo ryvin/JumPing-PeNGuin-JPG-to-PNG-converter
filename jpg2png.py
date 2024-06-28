@@ -1,5 +1,4 @@
 import os
-import json
 import logging
 import tkinter as tk
 from tkinter import filedialog, ttk, messagebox
@@ -15,29 +14,6 @@ class JPGtoPNGConverter:
         self.dest_dir = ""
         self.total_files = 0
         self.converted_files = 0
-
-    def load_config(self):
-        try:
-            if getattr(sys, 'frozen', False):
-                application_path = sys._MEIPASS
-            else:
-                application_path = os.path.dirname(os.path.abspath(__file__))
-
-            config_file = os.path.join(application_path, 'config.json')
-            with open(config_file, 'r') as file:
-                config = json.load(file)
-
-            required_keys = ['source_directory', 'destination_directory']
-            for key in required_keys:
-                if key not in config:
-                    raise KeyError(f"Missing required key in config: {key}")
-                if not isinstance(config[key], str) or not config[key]:
-                    raise ValueError(f"Invalid value for {key} in config")
-
-            return config
-        except (FileNotFoundError, json.JSONDecodeError, KeyError, ValueError) as e:
-            logging.error(f"Error loading config: {str(e)}")
-            return None
 
     def is_image(self, file_path):
         try:
@@ -123,7 +99,6 @@ class JPGtoPNGConverter:
         self.status_label.grid(column=1, row=4)
 
         self.root.mainloop()
-
 
     def browse_directory(self, entry):
         directory = filedialog.askdirectory()

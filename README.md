@@ -1,6 +1,6 @@
 # JumPinG PeNGuin - JPG to PNG Converter
 
-This Python script converts JPG images to PNG format using multithreading for improved performance. It can be run as a Python script or as a standalone Windows executable, both supporting GUI and CLI modes.
+This Python script converts JPG images to PNG format using multithreading for improved performance. It can be run as a Python script or as a single standalone Windows executable, supporting both GUI and CLI modes.
 
 ## Features
 
@@ -8,7 +8,7 @@ This Python script converts JPG images to PNG format using multithreading for im
 - Uses multithreading for faster processing
 - Implements logging for better debugging and monitoring
 - Includes error handling and input validation
-- Can be built as a standalone Windows executable supporting both GUI and CLI modes
+- Builds as a single standalone Windows executable supporting both GUI and CLI modes
 - Resumes interrupted conversions by skipping existing PNG files
 
 ## Installation
@@ -52,13 +52,13 @@ This Python script converts JPG images to PNG format using multithreading for im
    python build_exe.py
    ```
 
-2. An executable named `JPGtoPNGConverter.exe` will be created in the `dist` folder.
+2. A single executable named `JPGtoPNGConverter.exe` will be created in the `dist` folder. This executable supports both GUI and CLI modes.
 
-3. To use the GUI version:
+3. To use the GUI mode:
    - Double-click `JPGtoPNGConverter.exe`, or
    - Run `JPGtoPNGConverter.exe` from the command line without arguments
 
-4. To use the CLI version:
+4. To use the CLI mode:
    ```
    JPGtoPNGConverter.exe /path/to/source /path/to/destination
    ```
