@@ -11,7 +11,17 @@ This Python script converts JPG images to PNG format using multithreading for im
 - Builds as a single standalone Windows executable supporting both GUI and CLI modes
 - Resumes interrupted conversions by skipping existing PNG files
 
-## Installation
+## Download
+
+A pre-built Windows executable is available for download from the project's GitLab releases page:
+
+[Download JPGtoPNGConverter.exe](https://gitlab.leadingbit.com/raul/jpg2png/-/releases)
+
+This executable supports both GUI and CLI modes.
+
+## Installation (for development)
+
+If you want to run the script directly or build the executable yourself, follow these steps:
 
 1. Clone the repository:
    ```
@@ -47,18 +57,13 @@ This Python script converts JPG images to PNG format using multithreading for im
 
 ### As a Windows Executable
 
-1. Build the executable:
-   ```
-   python build_exe.py
-   ```
+1. Download `JPGtoPNGConverter.exe` from the [releases page](https://gitlab.leadingbit.com/raul/jpg2png/-/releases) or build it yourself using `python build_exe.py`.
 
-2. A single executable named `JPGtoPNGConverter.exe` will be created in the `dist` folder. This executable supports both GUI and CLI modes.
-
-3. To use the GUI mode:
+2. To use the GUI mode:
    - Double-click `JPGtoPNGConverter.exe`, or
    - Run `JPGtoPNGConverter.exe` from the command line without arguments
 
-4. To use the CLI mode:
+3. To use the CLI mode:
    ```
    JPGtoPNGConverter.exe /path/to/source /path/to/destination
    ```
