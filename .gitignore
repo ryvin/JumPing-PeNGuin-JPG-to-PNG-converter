@@ -1,4 +1,4 @@
 .conda
+*.spec
 build
 dist
-jpg2png.spec

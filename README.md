@@ -1,36 +1,95 @@
-# JPG to PNG Converter
+# JumPinG PeNGuin - JPG to PNG Converter
 
-This is a simple Python script that converts JPG images to PNG format.
+This Python script converts JPG images to PNG format using multithreading for improved performance. It can be run as a Python script or as a standalone Windows executable, both supporting GUI and CLI modes.
+
+## Features
+
+- Converts JPG/JPEG images to PNG format
+- Uses multithreading for faster processing
+- Implements logging for better debugging and monitoring
+- Includes error handling and input validation
+- Can be built as a standalone Windows executable supporting both GUI and CLI modes
+- Resumes interrupted conversions by skipping existing PNG files
 
 ## Installation
 
-1. Clone the repository.
-2. Install the required dependencies:
-pip install -r requirements.txt
+1. Clone the repository:
+   ```
+   git clone https://gitlab.leadingbit.com/raul/jpg2png.git
+   cd jpg2png
+   ```
 
-Copy
-Insert
+2. Create a virtual environment (optional but recommended):
+   ```
+   python -m venv venv
+   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   ```
+
+3. Install the required dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
 
 ## Usage
 
-1. Update the `config.json` file with the correct paths.
-2. Run the script:
-python jpg2png.py
+### As a Python Script
 
-Copy
-Insert
+1. For GUI mode:
+   ```
+   python jpg2png.py
+   ```
+   Use the GUI to select source and destination directories, then click "Convert".
 
-## Configuration
+2. For CLI mode:
+   ```
+   python jpg2png.py /path/to/source /path/to/destination
+   ```
 
-The script uses a `config.json` file to specify the source and destination directories. The `config.json` file should contain the following:
+### As a Windows Executable
 
-```json
-{
- "source_directory": "path_to_your_jpg_files",
- "destination_directory": "path_to_save_png_files"
-}
-How it works
-The script reads the config.json file to determine the source and destination directories. It then iterates over all the files in the source directory, checking if they have a .jpg or .jpeg extension. For each file that meets this criteria, the script opens the image using the PIL library, saves it as a PNG file in the destination directory, and prints a message indicating the conversion was successful.
+1. Build the executable:
+   ```
+   python build_exe.py
+   ```
 
-License
-Apache 2.0 (https://choosealicense.com/licenses/apache-2.0/)
+2. An executable named `JPGtoPNGConverter.exe` will be created in the `dist` folder.
+
+3. To use the GUI version:
+   - Double-click `JPGtoPNGConverter.exe`, or
+   - Run `JPGtoPNGConverter.exe` from the command line without arguments
+
+4. To use the CLI version:
+   ```
+   JPGtoPNGConverter.exe /path/to/source /path/to/destination
+   ```
+
+## How it works
+
+1. The script scans the source directory for JPG/JPEG images.
+2. It checks the destination directory for existing PNG files to avoid unnecessary conversions.
+3. For each valid JPG image that doesn't have a corresponding PNG, the script converts it to PNG format and saves it in the destination directory.
+4. The conversion process uses multithreading to improve performance when dealing with multiple images.
+5. Progress is displayed in real-time, showing the number of files converted and the percentage complete.
+6. Logging is implemented to track the conversion process and any errors that may occur.
+
+## Resuming Interrupted Conversions
+
+If the conversion process is interrupted, you can simply run the script or executable again with the same source and destination directories. The converter will automatically skip any PNG files that already exist in the destination folder, effectively resuming from where it left off.
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+Distributed under the Apache 2.0 License. See `LICENSE` for more information.
+
+## Contact
+
+Raul Pineda - raul@pinedamail.com
+
+Project Link: [https://gitlab.leadingbit.com/raul/jpg2png](https://gitlab.leadingbit.com/raul/jpg2png)
