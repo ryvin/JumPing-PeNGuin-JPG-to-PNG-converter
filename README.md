@@ -96,6 +96,6 @@ Distributed under the Apache 2.0 License. See `LICENSE` for more information.
 
 ## Contact
 
-Raul Pineda - raul@pinedamail.com
+Raul Pineda
 
 Project Link: [https://gitlab.leadingbit.com/raul/jpg2png](https://gitlab.leadingbit.com/raul/jpg2png)
